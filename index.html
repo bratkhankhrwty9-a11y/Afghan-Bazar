@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>افغان بازار</title>
+<style>
+body{margin:0;background:#faf6eb;font-family:Arial,sans-serif;color:#17264b}
+header{background:white;padding:18px;text-align:center;font-size:25px;font-weight:bold}
+.hero{background:linear-gradient(130deg,#102b60,#863b36);color:white;padding:35px 18px;text-align:center}
+input,select,textarea{padding:13px;margin:7px 0;width:90%;border:1px solid #ddd;border-radius:12px}
+button,.btn{padding:12px 18px;border:0;border-radius:12px;background:#e99a20;color:white;font-size:16px;cursor:pointer;text-decoration:none;display:inline-block}
+main{padding:15px;max-width:850px;margin:auto}
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cat,.card{background:white;border:1px solid #eee;border-radius:16px;padding:15px;text-align:center}
+.card{margin:12px 0;text-align:right}
+.price{color:#c47a16;font-weight:bold}
+.contact{background:#168b50}
+.call{background:#1769aa}
+section{margin-bottom:25px}
+</style>
+</head>
+<body>
+
+<header>🇦🇫 افغان بازار</header>
+
+<div class="hero">
+<h1>افغان بازار</h1>
+<p>هر څه چې غواړې، دلته یې ومومه</p>
+<input id="search" placeholder="څه لټوې؟ لکه موټر، کور، موبایل...">
+<button onclick="showAds()">لټون</button>
+</div>
+
+<main>
+
+<section>
+<h2>کټګورۍ</h2>
+<div class="categories">
+<div class="cat">🚗 موټرونه</div>
+<div class="cat">🏠 کورونه</div>
+<div class="cat">🌾 کرنه</div>
+<div class="cat">📱 موبایلونه</div>
+<div class="cat">🛍️ دوکانونه</div>
+<div class="cat">📦 نور</div>
+</div>
+</section>
+
+<section>
+<h2>⭐ خپل اعلان خپور کړه</h2>
+<input id="title" placeholder="د اعلان نوم">
+<input id="price" placeholder="قیمت">
+<input id="city" placeholder="ولایت">
+<textarea id="details" placeholder="د اعلان معلومات"></textarea>
+<button onclick="addAd()">اعلان ثبت کړه</button>
+</section>
+
+<section>
+<h2>🏷️ تازه اعلانونه</h2>
+<div id="ads"></div>
+</section>
+
+<section style="text-align:center;background:white;padding:22px;border-radius:18px">
+<h2>📞 له افغان بازار سره اړیکه</h2>
+<p>د مرستې او معلوماتو لپاره موږ سره اړیکه ونیسئ.</p>
+<a class="btn contact" href="https://wa.me/93706022306" target="_blank">WhatsApp پیغام</a>
+<a class="btn call" href="tel:+93706022306">مستقیم زنګ</a>
+<p>+93 706 022 306</p>
+</section>
+
+</main>
+
+<script>
+let ads=JSON.parse(localStorage.getItem("afghanAds")||"[]");
+
+function save(){
+localStorage.setItem("afghanAds",JSON.stringify(ads));
+}
+
+function addAd(){
+let title=document.getElementById("title").value;
+let price=document.getElementById("price").value;
+let city=document.getElementById("city").value;
+let details=document.getElementById("details").value;
+
+if(!title||!price||!city){
+alert("مهرباني وکړئ معلومات بشپړ کړئ");
+return;
+}
+
+ads.push({title,price,city,details});
+save();
+showAds();
+
+document.getElementById("title").value="";
+document.getElementById("price").value="";
+document.getElementById("city").value="";
+document.getElementById("details").value="";
+alert("ستاسو اعلان ثبت شو!");
+}
+
+function showAds(){
+let q=document.getElementById("search").value.toLowerCase();
+let box=document.getElementById("ads");
+box.innerHTML="";
+
+ads.filter(a=>a.title.toLowerCase().includes(q))
+.forEach(a=>{
+let card=document.createElement("div");
+card.className="card";
+
+let h=document.createElement("h3");
+h.textContent=a.title;
+let p=document.createElement("p");
+p.className="price";
+p.textContent=a.price+" افغانۍ";
+let c=document.createElement("p");
+c.textContent="📍 "+a.city;
+let d=document.createElement("p");
+d.textContent=a.details;
+
+card.append(h,p,c,d);
+box.appendChild(card);
+});
+}
+showAds();
+</script>
+
+</body>
+</html>
