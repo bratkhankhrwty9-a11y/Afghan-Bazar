@@ -1,131 +1,167 @@
-
 <!DOCTYPE html>
 <html lang="ps" dir="rtl">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>افغان بازار</title>
 <style>
-body{margin:0;background:#faf6eb;font-family:Arial,sans-serif;color:#17264b}
-header{background:white;padding:18px;text-align:center;font-size:25px;font-weight:bold}
-.hero{background:linear-gradient(130deg,#102b60,#863b36);color:white;padding:35px 18px;text-align:center}
-input,select,textarea{padding:13px;margin:7px 0;width:90%;border:1px solid #ddd;border-radius:12px}
-button,.btn{padding:12px 18px;border:0;border-radius:12px;background:#e99a20;color:white;font-size:16px;cursor:pointer;text-decoration:none;display:inline-block}
-main{padding:15px;max-width:850px;margin:auto}
-.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.cat,.card{background:white;border:1px solid #eee;border-radius:16px;padding:15px;text-align:center}
+:root{--navy:#102b60;--gold:#e99a20;--bg:#faf6eb;--green:#168b50}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#17264b}
+header{background:#fff;padding:16px;text-align:center;font-size:24px;font-weight:bold}
+.hero{background:linear-gradient(130deg,#102b60,#863b36);color:#fff;padding:26px 16px;text-align:center}
+main{padding:15px;max-width:900px;margin:auto}
+section{margin-bottom:22px}
+input,select,textarea{display:block;padding:13px;margin:8px 0;width:100%;border:1px solid #ddd;border-radius:12px;font-size:16px;background:#fff}
+textarea{min-height:90px}
+button,.btn{padding:11px 16px;border:0;border-radius:12px;background:var(--gold);color:#fff;font-size:16px;cursor:pointer;text-decoration:none;display:inline-block;margin:4px}
+button.secondary{background:#52627d}
+button.green{background:var(--green)}
+button.red{background:#b83232}
+.panel,.card,.cat{background:#fff;border:1px solid #eee;border-radius:15px;padding:14px}
 .card{margin:12px 0;text-align:right}
-.price{color:#c47a16;font-weight:bold}
-.contact{background:#168b50}
-.call{background:#1769aa}
-section{margin-bottom:25px}
+.categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.cat{cursor:pointer;text-align:center;font-weight:bold}
+.cat.active{border:2px solid var(--gold);background:#fff8e9}
+.price{color:#b36c08;font-weight:bold}
+.muted{color:#667085;font-size:13px}
+.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.stat{background:#f2f4f7;padding:13px;border-radius:12px;text-align:center}
+.stat strong{display:block;font-size:24px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;background:#eef2f8;border-radius:20px;padding:4px 9px;font-size:12px}
+footer{text-align:center;padding:20px;background:#fff;border-radius:16px}
+hr{border:0;border-top:1px solid #eee;margin:15px 0}
+@media(min-width:650px){.categories{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
-
 <header>🇦🇫 افغان بازار</header>
-
 <div class="hero">
 <h1>افغان بازار</h1>
 <p>هر څه چې غواړې، دلته یې ومومه</p>
-<input id="search" placeholder="څه لټوې؟ لکه موټر، کور، موبایل...">
-<button onclick="showAds()">لټون</button>
+<input id="search" placeholder="څه لټوې؟ لکه موټر، کور، موبایل..." oninput="showAds()">
+<select id="filterCategory" onchange="showAds()">
+<option value="">ټولې کټګورۍ</option>
+</select>
 </div>
-
 <main>
-
 <section>
-<h2>کټګورۍ</h2>
-<div class="categories">
-<div class="cat">🚗 موټرونه</div>
-<div class="cat">🏠 کورونه</div>
-<div class="cat">🌾 کرنه</div>
-<div class="cat">📱 موبایلونه</div>
-<div class="cat">🛍️ دوکانونه</div>
-<div class="cat">📦 نور</div>
-</div>
+<h2>📂 کټګورۍ</h2>
+<div class="categories" id="categoryTiles"></div>
 </section>
 
-<section>
-<h2>⭐ خپل اعلان خپور کړه</h2>
-<input id="title" placeholder="د اعلان نوم">
-<input id="price" placeholder="قیمت">
-<input id="city" placeholder="ولایت">
+<section class="panel">
+<h2>⭐ خپل اعلان وسپاره</h2>
+<p class="muted">ستاسې اعلان به د مدیر تر منظورۍ مخکې خلکو ته نه ښکاري.</p>
+<form id="adForm">
+<input id="title" required maxlength="90" placeholder="د اعلان نوم"><select id="category" required>
+<option value="">کټګوري وټاکئ</option>
+</select>
+<input id="price" required placeholder="قیمت (افغانۍ)">
+<input id="city" required placeholder="ولایت">
+<input id="phone" placeholder="د اړیکې شمېره (اختیاري)">
 <textarea id="details" placeholder="د اعلان معلومات"></textarea>
-<button onclick="addAd()">اعلان ثبت کړه</button>
+<button class="green" type="submit">اعلان د منظورۍ لپاره وسپاره</button>
+</form>
 </section>
 
 <section>
-<h2>🏷️ تازه اعلانونه</h2>
+<h2>🏷️ منظور شوي اعلانونه</h2>
 <div id="ads"></div>
 </section>
 
-<section style="text-align:center;background:white;padding:22px;border-radius:18px">
-<h2>📞 له افغان بازار سره اړیکه</h2>
-<p>د مرستې او معلوماتو لپاره موږ سره اړیکه ونیسئ.</p>
-<a class="btn contact" href="https://wa.me/93706022306" target="_blank">WhatsApp پیغام</a>
-<a class="btn call" href="tel:+93706022306">مستقیم زنګ</a>
-<p>+93 706 022 306</p>
+<section class="panel">
+<div class="row" style="justify-content:space-between">
+<h2>🔐 د مدیر برخه</h2>
+<button class="secondary" onclick="adminLogin()">د مدیر ننوتل</button>
+</div>
+<div id="adminPanel" class="hidden">
+<p class="muted">دا د ازمایښتي نسخې مدیر برخه ده. لاندې PIN یوازې د ازموینې لپاره دی؛ د عامې انټرنېټي خپرونې لپاره خوندي نه دی.</p>
+<div class="stats">
+<div class="stat"><strong id="pendingCount">0</strong>د تایید په تمه</div>
+<div class="stat"><strong id="approvedCount">0</strong>منظور شوي اعلانونه</div>
+<div class="stat"><strong id="totalCount">0</strong>ټول اعلانونه</div>
+<div class="stat"><strong id="viewCount">0</strong>ټولې لیدنې</div>
+</div>
+<h3>د تایید په تمه اعلانونه</h3>
+<div id="pendingAds"></div>
+<h3>منظور شوي اعلانونه او اداره</h3>
+<div id="manageAds"></div>
+<div class="row">
+<button class="secondary" onclick="adminLogout()">وتل</button>
+<button class="red" onclick="clearDemoData()">د ازموینې ټول اعلانونه پاکول</button>
+</div>
+</div>
 </section>
 
+<footer>
+<h2>📞 له افغان بازار سره اړیکه</h2>
+<p>د مرستې او معلوماتو لپاره موږ سره اړیکه ونیسئ.</p>
+<a class="btn" style="background:#168b50" href="https://wa.me/93706022306" target="_blank" rel="noopener">WhatsApp پیغام</a>
+<a class="btn" style="background:#1769aa" href="tel:+93706022306">مستقیم زنګ</a>
+<p>+93 706 022 306</p>
+</footer>
+<p class="muted">یادونه: دا نسخه د ازموینې لپاره ده او معلومات یوازې په همدې براوزر/موبایل کې ساتي. د انلاین کاروونکو، خوندي مدیر لاسرسي او ګډ ډیټابیس لپاره باید Supabase ورسره ونښلول شي.</p>
 </main>
-
 <script>
-let ads=JSON.parse(localStorage.getItem("afghanAds")||"[]");
-
-function save(){
-localStorage.setItem("afghanAds",JSON.stringify(ads));
+const categories=[
+ ["🚗","موټرونه"],["🏠","کورونه او ځمکې"],["🌾","کرنه او زراعتي وسایل"],
+ ["📱","موبایلونه"],["🛍️","دوکانونه او سوداګري"],["🐑","څاروي او مالداري"],
+ ["🪑","کورني وسایل"],["👕","کالي او بوټان"],["📦","نور"]
+];
+const ADMIN_PIN="2468"; // یوازې د ازموینې PIN؛ د آنلاین خپرونې لپاره خوندي نه دی.
+let ads=JSON.parse(localStorage.getItem("afghanAdsV2")||"[]");
+let isAdmin=false;
+function save(){localStorage.setItem("afghanAdsV2",JSON.stringify(ads));}
+function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function initCategories(){
+ const cat=document.getElementById("category"), filter=document.getElementById("filterCategory"), tiles=document.getElementById("categoryTiles");
+ categories.forEach(([emoji,name])=>{
+  cat.add(new Option(emoji+" "+name,name));
+  filter.add(new Option(emoji+" "+name,name));
+  const b=document.createElement("button");b.className="cat";b.type="button";b.textContent=emoji+" "+name;
+  b.onclick=()=>{filter.value=name;showAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"});};
+  tiles.appendChild(b);
+ });
 }
-
-function addAd(){
-let title=document.getElementById("title").value;
-let price=document.getElementById("price").value;
-let city=document.getElementById("city").value;
-let details=document.getElementById("details").value;
-
-if(!title||!price||!city){
-alert("مهرباني وکړئ معلومات بشپړ کړئ");
-return;
-}
-
-ads.push({title,price,city,details});
-save();
-showAds();
-
-document.getElementById("title").value="";
-document.getElementById("price").value="";
-document.getElementById("city").value="";
-document.getElementById("details").value="";
-alert("ستاسو اعلان ثبت شو!");
-}
-
-function showAds(){
-let q=document.getElementById("search").value.toLowerCase();
-let box=document.getElementById("ads");
-box.innerHTML="";
-
-ads.filter(a=>a.title.toLowerCase().includes(q))
-.forEach(a=>{
-let card=document.createElement("div");
-card.className="card";
-
-let h=document.createElement("h3");
-h.textContent=a.title;
-let p=document.createElement("p");
-p.className="price";
-p.textContent=a.price+" افغانۍ";
-let c=document.createElement("p");
-c.textContent="📍 "+a.city;
-let d=document.createElement("p");
-d.textContent=a.details;
-
-card.append(h,p,c,d);
-box.appendChild(card);
+document.getElementById("adForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const ad={id:Date.now().toString(),title:title.value.trim(),category:category.value,price:price.value.trim(),city:city.value.trim(),phone:phone.value.trim(),details:details.value.trim(),status:"pending",views:0,likes:0,created:new Date().toISOString()};
+ if(!ad.title||!ad.category||!ad.price||!ad.city){alert("مهرباني وکړئ اړین معلومات بشپړ کړئ.");return;}
+ ads.unshift(ad);save();e.target.reset();renderAdmin();
+ alert("اعلان د مدیر د منظورۍ لپاره وسپارل شو. تر منظورۍ مخکې نه خپرېږي.");
 });
+function showAds(){
+ const q=document.getElementById("search").value.trim().toLowerCase(), f=document.getElementById("filterCategory").value, box=document.getElementById("ads");
+ box.innerHTML="";
+ const list=ads.filter(a=>a.status==="approved"&&(!f||a.category===f)&&(!q||(a.title+" "+a.details+" "+a.city).toLowerCase().includes(q)));
+ if(!list.length){box.innerHTML='<div class="card">اوسمهال په دې کټګورۍ کې منظور شوی اعلان نشته.</div>';return;}
+ list.forEach(a=>{
+  const card=document.createElement("div");card.className="card";
+  card.innerHTML=`<h3>${safe(a.title)}</h3><span class="tag">${safe(a.category)}</span><p class="price">${safe(a.price)} افغانۍ</p><p>📍 ${safe(a.city)}</p><p>${safe(a.details)}</p><p class="muted">👁 ${a.views||0} لیدنې　❤️ ${a.likes||0} خوښې</p><div class="row"><button onclick="viewAd('${a.id}')">اعلان وګوره</button><button class="secondary" onclick="likeAd('${a.id}')">❤️ خوښول</button>${a.phone?`<a class="btn" style="background:#168b50" href="tel:${safe(a.phone)}">اړیکه</a>`:""}</div>`;
+  box.appendChild(card);
+ });
 }
-showAds();
+function viewAd(id){const a=ads.find(x=>x.id===id);if(a){a.views=(a.views||0)+1;save();showAds();}}
+function likeAd(id){const a=ads.find(x=>x.id===id);if(a){a.likes=(a.likes||0)+1;save();showAds();}}
+function adminLogin(){const p=prompt("د ازموینې مدیر PIN ولیکئ:");if(p===ADMIN_PIN){isAdmin=true;document.getElementById("adminPanel").classList.remove("hidden");renderAdmin();}else if(p!==null){alert("PIN ناسم دی.");}}
+function adminLogout(){isAdmin=false;document.getElementById("adminPanel").classList.add("hidden");}
+function renderAdmin(){
+ if(!isAdmin)return;
+ const pending=ads.filter(a=>a.status==="pending"), approved=ads.filter(a=>a.status==="approved");
+ document.getElementById("pendingCount").textContent=pending.length;
+ document.getElementById("approvedCount").textContent=approved.length;
+ document.getElementById("totalCount").textContent=ads.length;
+ document.getElementById("viewCount").textContent=ads.reduce((n,a)=>n+(a.views||0),0);
+ document.getElementById("pendingAds").innerHTML=pending.length?"":'<p class="muted">د تایید په تمه اعلان نشته.</p>';
+ pending.forEach(a=>{document.getElementById("pendingAds").innerHTML+=`<div class="card"><b>${safe(a.title)}</b><p>${safe(a.category)} · ${safe(a.city)} · ${safe(a.price)} افغانۍ</p><p>${safe(a.details)}</p><button class="green" onclick="setStatus('${a.id}','approved')">منظورول</button><button class="red" onclick="setStatus('${a.id}','rejected')">ردول</button></div>`;});
+ document.getElementById("manageAds").innerHTML=approved.length?"":'<p class="muted">منظور شوی اعلان نشته.</p>';
+ approved.forEach(a=>{document.getElementById("manageAds").innerHTML+=`<div class="card"><b>${safe(a.title)}</b><p>${safe(a.category)} · ${safe(a.city)} · لیدنې: ${a.views||0} · خوښې: ${a.likes||0}</p><button class="red" onclick="setStatus('${a.id}','stopped')">بندول</button></div>`;});
+}
+function setStatus(id,status){const a=ads.find(x=>x.id===id);if(a){a.status=status;save();renderAdmin();showAds();}}
+function clearDemoData(){if(confirm("ایا ډاډه یاست چې د دې ازموینې ټول اعلانونه پاک کړئ؟")){ads=[];save();renderAdmin();showAds();}}
+initCategories();showAds();
 </script>
-
-</body>
-</html>
+</body></html>
