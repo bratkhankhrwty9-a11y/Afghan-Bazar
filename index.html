@@ -128,9 +128,8 @@ function initCategories(){
  });
 }
 document.getElementById("adForm").addEventListener("submit",e=>{
- e.preventDefault();
- const ad={id:Date.now().toString(),title:title.value.trim(),category: image:document.getElementById("adImage").files[0] ? URL.createObjectURL(document.getElementById("adImage").files[0]) : "",category.value,price:price.value.trim(),city:city.value.trim(),phone:phone.value.trim(),details:details.value.trim(),status:"pending",views:0,likes:0,created:new Date().toISOString()};
- if(!ad.title||!ad.category||!ad.price||!ad.city){alert("مهرباني وکړئ اړین معلومات بشپړ کړئ.");return;}
+ e.preventDefault()title:title.value.trim(),category: image:document.getElementById("adImage").files[0] ? URL.createObjectURL(document.getElementById("adImage").files[0]) : "",category.value,price:price.value.trim(),city:city.value.trim(),phone:phone.value.trim(),details:details.value.trim(),status:"pending",views:0,likes:0,created:new Date().toISOString()};
+ const ad={id:Date.now().toString(),title:title.value.trim(),image:"",category:category.value,price:price.value.trim(),city:city.value.trim(),phone:phone.value.trim(),details:details.value.trim(),status:"pending",views:0,likes:0,created:new Date().toISOString()};
  ads.unshift(ad);save();e.target.reset();renderAdmin();
  alert("اعلان د مدیر د منظورۍ لپاره وسپارل شو. تر منظورۍ مخکې نه خپرېږي.");
 });
