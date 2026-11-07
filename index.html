@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ps" dir="rtl">
 <head>
@@ -8,19 +7,19 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f5f3eb;color:#17264b;font-family:Arial,sans-serif}
-header{background:#102b60;color:white;text-align:center;padding:20px;font-size:25px;font-weight:bold}
-main{max-width:850px;margin:auto;padding:15px}
-section{background:white;padding:15px;border-radius:14px;margin:15px 0}
-h2{color:#102b60}
+header{background:#102b60;color:white;text-align:center;padding:22px;font-size:26px;font-weight:bold}
+main{max-width:850px;margin:auto;padding:12px}
+section{background:white;padding:15px;border-radius:13px;margin:13px 0}
+h2{color:#102b60;font-size:20px}
 input,select,textarea{width:100%;padding:13px;margin:7px 0;border:1px solid #ccc;border-radius:9px;font-size:16px}
-button,.btn{border:0;border-radius:9px;padding:11px 15px;margin:4px;background:#e99a20;color:white;font-size:15px;cursor:pointer;text-decoration:none;display:inline-block}
+button,.btn{border:0;border-radius:9px;padding:11px 14px;margin:4px;background:#e99a20;color:white;font-size:15px;cursor:pointer;text-decoration:none;display:inline-block}
+.blue{background:#102b60}
 .green{background:#168b50}
 .red{background:#b83232}
-.blue{background:#102b60}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.cat{background:#f0f3f8;color:#102b60;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.cat{background:#edf1f7;color:#102b60;font-weight:bold}
 .card{border:1px solid #ddd;border-radius:12px;padding:12px;margin:12px 0}
-.card img{width:100%;max-height:260px;object-fit:contain;border-radius:10px}
+.card img,.card video{width:100%;max-height:280px;object-fit:contain;border-radius:9px}
 .muted{color:#777;font-size:13px}
 .hidden{display:none}
 footer{text-align:center;padding:20px;background:white}
@@ -28,221 +27,361 @@ footer{text-align:center;padding:20px;background:white}
 </head>
 <body>
 
-<header>🇦🇫 افغان بازار</header>
+<header>افغان بازار</header>
 
 <main>
+
 <section>
-<h2>📂 د اعلانونو کټګورۍ</h2>
-<div class="grid" id="categories"></div>
+<h2>د اعلانونو کټګورۍ</h2>
+<div id="categories" class="grid"></div>
 </section>
 
 <section>
-<h2>🔎 اعلانونه ولټوئ</h2>
-<input id="search" placeholder="د اعلان نوم یا ولایت ولیکئ" oninput="showAds()">
-<select id="filter" onchange="showAds()">
+<h2>د اعلانونو لټون</h2>
+<input id="search" placeholder="د اعلان نوم یا ولایت ولیکئ">
+<select id="filter">
 <option value="">ټولې کټګورۍ</option>
 </select>
 </section>
 
 <section>
-<h2>🏷️ اعلانونه</h2>
-<div id="ads"></div>
+<h2>اعلانونه</h2>
+<div id="ads">اعلانونه نشته.</div>
 </section>
 
 <section>
-<h2>🔐 د مدیر برخه</h2>
-<button class="blue" onclick="login()">د مدیر ننوتل</button>
+<h2>د مدیر برخه</h2>
+<button class="blue" onclick="login()">مدیر ته ننوتل</button>
+
 <div id="admin" class="hidden">
-<h3>نوی اعلان زیاتول</h3>
+<h3>نوی اعلان</h3>
+
 <input id="title" placeholder="د اعلان نوم">
+
 <select id="category"></select>
+
 <input id="price" placeholder="قیمت په افغانۍ">
-<input id="city" placeholder="ولایت">
+
+<select id="city">
+<option value="">ولایت انتخاب کړئ</option>
+<option>هلمند</option><option>کابل</option>
+<option>کندهار</option><option>هرات</option>
+<option>ننګرهار</option><option>بلخ</option>
+<option>فراه</option><option>نیمروز</option>
+<option>غزني</option><option>پکتیا</option>
+<option>پکتیکا</option><option>خوست</option>
+<option>لوګر</option><option>وردګ</option>
+<option>زابل</option><option>ارزګان</option>
+<option>دایکندي</option><option>بامیان</option>
+<option>پروان</option><option>کاپیسا</option>
+<option>پنجشېر</option><option>لغمان</option>
+<option>کنړ</option><option>نورستان</option>
+<option>بدخشان</option><option>تخار</option>
+<option>کندز</option><option>بغلان</option>
+<option>سمنګان</option><option>جوزجان</option>
+<option>سرپل</option><option>فاریاب</option>
+<option>بادغیس</option><option>غور</option>
+</select>
+
 <textarea id="details" placeholder="د اعلان معلومات"></textarea>
-<label>د اعلان عکس وټاکئ:</label>
-<input id="photo" type="file" accept="image/*">
+
+<label>عکس یا ویډیو انتخاب کړئ</label>
+<input id="media" type="file" accept="image/*,video/*">
+
+<select id="duration">
+<option value="1">۱ ساعت</option>
+<option value="24">۲۴ ساعته</option>
+<option value="120">۵ ورځې</option>
+<option value="720">یوه میاشت</option>
+</select>
+
+<label>
+<input type="checkbox" id="repeat" style="width:auto">
+اعلان په تکراري ډول ښکاره شي
+</label>
+
 <button class="green" onclick="addAd()">اعلان خپرول</button>
+
 <hr>
 <h3>د اعلانونو اداره</h3>
 <div id="manage"></div>
+
+<hr>
+<h3>احصایې</h3>
+<div id="stats"></div>
+
 <button class="red" onclick="logout()">وتل</button>
 </div>
 </section>
 
 <footer>
-<h3>📞 له افغان بازار سره اړیکه</h3>
-<a class="btn green" href="https://wa.me/93706022306">WhatsApp اړیکه</a>
+<h3>له افغان بازار سره اړیکه</h3>
+<a class="btn green" href="https://wa.me/93706022306">WhatsApp</a>
 <a class="btn blue" href="https://www.facebook.com/profile.php?id=61587252753972">Facebook</a>
+<p>مدیر: برات خان</p>
 <p>+93 706 022 306</p>
 </footer>
+
 </main>
 
 <script>
-const names=[
+const categories=[
 "موټرونه","کورونه او ځمکې","کرنه او زراعتي وسایل",
 "موبایلونه","دوکانونه او سوداګري","څاروي او مالداري",
 "کورني وسایل","کالي او بوټان","نور"
 ];
 
 let ads=[];
-let isAdmin=false;
+let admin=false;
+let editing=null;
 
+const $=id=>document.getElementById(id);
+
+function load(){
 try{
 ads=JSON.parse(localStorage.getItem("afghanMarketAds")||"[]");
-}catch(e){ads=[];}
+}catch(e){ads=[]}
+}
 
 function save(){
 localStorage.setItem("afghanMarketAds",JSON.stringify(ads));
 }
 
 function setup(){
-const c=document.getElementById("categories");
-const f=document.getElementById("filter");
-const a=document.getElementById("category");
-
-names.forEach(n=>{
-let b=document.createElement("button");
-b.className="cat";
-b.textContent=n;
-b.onclick=()=>{
-f.value=n;
-showAds();
-document.getElementById("ads").scrollIntoView();
-};
-c.appendChild(b);
-f.add(new Option(n,n));
-a.add(new Option(n,n));
+categories.forEach(c=>{
+$("categories").innerHTML+=
+`<button class="cat" onclick="chooseCategory('${c}')">${c}</button>`;
+$("category").add(new Option(c,c));
+$("filter").add(new Option(c,c));
 });
 }
+
+function chooseCategory(c){
+$("filter").value=c;
+showAds();
+$("ads").scrollIntoView({behavior:"smooth"});
+}
+
 function login(){
-let p=prompt("د مدیر PIN ولیکئ:");
-if(p==="2468"){
-isAdmin=true;
-document.getElementById("admin").classList.remove("hidden");
+let pin=prompt("د مدیر PIN ولیکئ");
+if(pin==="2468"){
+admin=true;
+$("admin").classList.remove("hidden");
 renderManage();
+showStats();
 }else{
 alert("PIN ناسم دی");
 }
 }
+
 function logout(){
-isAdmin=false;
-document.getElementById("admin").classList.add("hidden");
+admin=false;
+$("admin").classList.add("hidden");
 }
+
 function addAd(){
-if(!isAdmin)return;
-let title=document.getElementById("title").value.trim();
-let category=document.getElementById("category").value;
-let price=document.getElementById("price").value.trim();
-let city=document.getElementById("city").value.trim();
-let details=document.getElementById("details").value.trim();
-let file=document.getElementById("photo").files[0];
+if(!admin)return;
+
+let title=$("title").value.trim();
+let category=$("category").value;
+let price=$("price").value.trim();
+let city=$("city").value;
+let details=$("details").value.trim();
+let file=$("media").files[0];
 
 if(!title||!category||!price||!city||!file){
-alert("نوم، کټګوري، قیمت، ولایت او عکس بشپړ کړئ.");
+alert("ټول اړین معلومات بشپړ کړئ");
 return;
 }
-if(file.size>1500000){
-alert("عکس ډېر لوی دی. مهرباني وکړئ کوچنی عکس وټاکئ.");
+
+if(file.size>500000){
+alert("فایل ډېر لوی دی. کوچنی عکس یا ویډیو وټاکئ.");
 return;
 }
+
 let reader=new FileReader();
+
 reader.onload=function(){
-ads.unshift({
-id:Date.now().toString(),
+let ad={
+id:editing||Date.now().toString(),
 title,category,price,city,details,
-image:reader.result,
-views:0,
-likes:0
-});
+media:reader.result,
+type:file.type.startsWith("video")?"video":"image",
+duration:Number($("duration").value),
+repeat:$("repeat").checked,
+created:editing?
+(ads.find(a=>a.id===editing)?.created||Date.now()):
+Date.now(),
+views:editing?
+(ads.find(a=>a.id===editing)?.views||0):0,
+likes:editing?
+(ads.find(a=>a.id===editing)?.likes||0):0
+};
+
+if(editing){
+ads=ads.map(a=>a.id===editing?ad:a);
+}else{
+ads.unshift(ad);
+}
+
 try{
 save();
-document.getElementById("title").value="";
-document.getElementById("price").value="";
-document.getElementById("city").value="";
-document.getElementById("details").value="";
-document.getElementById("photo").value="";
+clearForm();
 showAds();
 renderManage();
-alert("اعلان په بریالیتوب خپور شو.");
+showStats();
+alert("اعلان ثبت شو");
 }catch(e){
-alert("د موبایل د زېرمه کولو ځای ډک دی. کوچنی عکس وکاروئ.");
+alert("د حافظې ستونزه ده. کوچنی فایل وکاروئ.");
 }
 };
-reader.onerror=()=>alert("عکس لوستل کېدای نه شول.");
+
+reader.onerror=()=>alert("فایل ونه لوستل شو");
 reader.readAsDataURL(file);
 }
+
+function clearForm(){
+["title","price","city","details","media"].forEach(id=>$(id).value="");
+$("repeat").checked=false;
+editing=null;
+}
+
 function showAds(){
-let box=document.getElementById("ads");
-let q=document.getElementById("search").value.trim().toLowerCase();
-let f=document.getElementById("filter").value;
+let box=$("ads");
 box.innerHTML="";
+let q=$("search").value.trim().toLowerCase();
+let f=$("filter").value;
+let now=Date.now();
+
 let list=ads.filter(a=>
 (!f||a.category===f)&&
-((a.title+" "+a.city+" "+a.details).toLowerCase().includes(q))
+(a.title+" "+a.city+" "+a.details).toLowerCase().includes(q)&&
+(now-a.created)<a.duration*3600000
 );
+
 if(!list.length){
 box.innerHTML="<p>اوس مهال اعلان نشته.</p>";
 return;
 }
+
 list.forEach(a=>{
 let d=document.createElement("div");
 d.className="card";
+
 let h=document.createElement("h3");
 h.textContent=a.title;
 d.appendChild(h);
-if(a.image){
-let img=document.createElement("img");
-img.src=a.image;
-img.alt=a.title;
-d.appendChild(img);
+
+if(a.media){
+let media;
+if(a.type==="video"){
+media=document.createElement("video");
+media.controls=true;
+media.playsInline=true;
+}else{
+media=document.createElement("img");
 }
+media.src=a.media;
+d.appendChild(media);
+}
+
 let p=document.createElement("p");
-p.textContent="کټګوري: "+a.category+" | قیمت: "+a.price+" افغانۍ | ولایت: "+a.city;
+p.textContent="کټګوري: "+a.category+
+" | قیمت: "+a.price+" افغانۍ | ولایت: "+a.city;
 d.appendChild(p);
+
 let detail=document.createElement("p");
 detail.textContent=a.details;
 d.appendChild(detail);
+
 let stats=document.createElement("p");
 stats.className="muted";
-stats.textContent="👁 "+(a.views||0)+" لیدنې  ❤️ "+(a.likes||0)+" خوښې";
+stats.textContent="لیدنې: "+(a.views||0)+" | خوښې: "+(a.likes||0);
 d.appendChild(stats);
+
 let like=document.createElement("button");
 like.textContent="❤️ خوښول";
-like.onclick=()=>{a.likes=(a.likes||0)+1;save();showAds();};
+like.onclick=()=>{
+a.likes++;
+save();
+showAds();
+showStats();
+};
 d.appendChild(like);
+
 let contact=document.createElement("a");
 contact.className="btn green";
 contact.href="https://wa.me/93706022306";
-contact.textContent="له مدیر سره اړیکه";
+contact.textContent="اړیکه";
 d.appendChild(contact);
+
 box.appendChild(d);
 });
 }
+
 function renderManage(){
-if(!isAdmin)return;
-let box=document.getElementById("manage");
+if(!admin)return;
+let box=$("manage");
 box.innerHTML="";
+
 ads.forEach(a=>{
 let d=document.createElement("div");
 d.className="card";
-let t=document.createElement("b");
-t.textContent=a.title;
-d.appendChild(t);
+
+let title=document.createElement("b");
+title.textContent=a.title;
+d.appendChild(title);
+
+let edit=document.createElement("button");
+edit.textContent="سمول";
+edit.onclick=()=>{
+editing=a.id;
+$("title").value=a.title;
+$("category").value=a.category;
+$("price").value=a.price;
+$("city").value=a.city;
+$("details").value=a.details;
+$("duration").value=a.duration;
+$("repeat").checked=a.repeat;
+alert("معلومات اصلاح کړئ او بیا اعلان خپور کړئ. که عکس بدلول نه غواړئ، نوی عکس وټاکئ.");
+};
+d.appendChild(edit);
+
 let del=document.createElement("button");
 del.className="red";
-del.textContent="ړنګول";
+del.textContent="حذف";
 del.onclick=()=>{
-if(confirm("دا اعلان ړنګ کړئ؟")){
+if(confirm("اعلان حذف کړئ؟")){
 ads=ads.filter(x=>x.id!==a.id);
-save();showAds();renderManage();
+save();
+showAds();
+renderManage();
+showStats();
 }
 };
 d.appendChild(del);
 box.appendChild(d);
 });
 }
+
+function showStats(){
+if(!admin)return;
+let views=ads.reduce((s,a)=>s+(a.views||0),0);
+let likes=ads.reduce((s,a)=>s+(a.likes||0),0);
+
+$("stats").textContent=
+"ټول اعلانونه: "+ads.length+
+" | ټولې لیدنې: "+views+
+" | ټولې خوښې: "+likes;
+}
+
+$("search").addEventListener("input",showAds);
+$("filter").addEventListener("change",showAds);
+
 setup();
+load();
 showAds();
 </script>
+
 </body>
 </html>
